@@ -112,19 +112,25 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Любые остальные ошибки.
+     * Обрабатывает непредвиденные ошибки приложения.
+     *
+     * <p>Техническая информация остаётся в логах,
+     * а клиент получает безопасное сообщение без внутренних деталей.</p>
+     *
+     * @param exception возникшее исключение
+     * @param request HTTP-запрос
+     * @return стандартное описание ошибки со статусом 500
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(
             Exception exception,
             HttpServletRequest request
     ) {
-
         exception.printStackTrace();
 
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                exception.getMessage(),
+                "Внутренняя ошибка приложения",
                 request
         );
     }
