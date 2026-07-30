@@ -42,9 +42,8 @@ public class AdEntity {
     )
     private String description;
 
-    @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
 
     @Column(

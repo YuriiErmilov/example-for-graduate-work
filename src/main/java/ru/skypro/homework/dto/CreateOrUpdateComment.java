@@ -8,18 +8,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Данные входа пользователя.
+ * Данные создания или изменения комментария.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Login {
+public class CreateOrUpdateComment {
 
     @NotBlank
-    @Size(min = 4, max = 32)
-    private String username;
-
-    @NotBlank
-    @Size(min = 8, max = 16)
-    private String password;
+    @Size(min = 8, max = 64)
+    private String text;
 }

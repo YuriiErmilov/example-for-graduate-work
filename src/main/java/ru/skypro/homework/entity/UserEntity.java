@@ -66,9 +66,8 @@ public class UserEntity {
     )
     private Role role;
 
-    @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
 
     @Column(

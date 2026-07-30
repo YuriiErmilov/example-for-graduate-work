@@ -8,18 +8,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Данные входа пользователя.
+ * Данные для изменения пароля пользователя.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Login {
-
-    @NotBlank
-    @Size(min = 4, max = 32)
-    private String username;
+public class NewPassword {
 
     @NotBlank
     @Size(min = 8, max = 16)
-    private String password;
+    private String currentPassword;
+
+    @NotBlank
+    @Size(min = 8, max = 16)
+    private String newPassword;
 }
