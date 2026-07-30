@@ -40,11 +40,10 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Провайдер аутентификации, использующий
-     * пользователей из PostgreSQL.
+     * Провайдер аутентификации.
      *
-     * @param userDetailsService сервис пользователей
-     * @param passwordEncoder    кодировщик паролей
+     * @param userDetailsService сервис загрузки пользователей
+     * @param passwordEncoder кодировщик паролей
      * @return провайдер аутентификации
      */
     @Bean
@@ -62,11 +61,11 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Основные правила доступа к REST API.
+     * Настраивает правила доступа к REST API.
      *
-     * @param http                   настройки HTTP Security
+     * @param http настройки HTTP Security
      * @param authenticationProvider провайдер аутентификации
-     * @return настроенная цепочка фильтров
+     * @return цепочка фильтров безопасности
      * @throws Exception при ошибке конфигурации
      */
     @Bean
@@ -91,34 +90,40 @@ public class WebSecurityConfig {
 
                 .authorizeRequests()
 
-                // Регистрация и обычный вход доступны всем.
+                // Регистрация и вход доступны всем.
                 .antMatchers(
                         "/register",
                         "/login"
                 ).permitAll()
 
-                // Swagger.
+                // Swagger доступен без авторизации.
                 .antMatchers(
                         "/swagger-ui.html",
                         "/swagger-ui/**",
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // Список и отдельное объявление можно смотреть без входа.
+                // Просмотр всех объявлений доступен всем.
                 .antMatchers(
                         HttpMethod.GET,
-                        "/ads",
+                        "/ads"
+                ).permitAll()
+
+                // Просмотр одного объявления доступен всем.
+                // Подходит только числовой id.
+                .antMatchers(
+                        HttpMethod.GET,
                         "/ads/{id:[0-9]+}"
                 ).permitAll()
 
-                // Картинки будут доступны без авторизации.
+                // Изображения доступны без авторизации.
                 .antMatchers(
                         HttpMethod.GET,
                         "/users/*/image",
                         "/ads/*/image"
                 ).permitAll()
 
-                // Остальные запросы требуют входа.
+                // Остальные запросы требуют авторизации.
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -129,7 +134,7 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Менеджер аутентификации Spring Security.
+     * Создаёт менеджер аутентификации.
      *
      * @param configuration конфигурация безопасности
      * @return менеджер аутентификации
@@ -143,9 +148,9 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Разрешает frontend обращаться к backend.
+     * Настраивает CORS для frontend.
      *
-     * @return настройки CORS
+     * @return конфигурация CORS
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
